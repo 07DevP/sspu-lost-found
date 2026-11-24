@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost and Found | Symbiosis Skills and Professional University</title>
+<style>
+:root{--red:#e30613;--ink:#1a1a1a;--bd:#dcdcdc;--muted:#666}
+*{box-sizing:border-box}
+body{margin:0;font:15px/1.5 "Segoe UI",Arial,sans-serif;color:#222;background:#f7f7f7}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+.topbar{background:#fff}.topbar .wrap{display:flex;justify-content:flex-end;gap:4px}
+.topbar a{background:var(--ink);color:#fff;text-decoration:none;font-weight:700;padding:7px 18px}
+.topbar a:hover{background:var(--red)}
+header{background:#fff;border-top:3px solid var(--red)}
+header .wrap{display:flex;align-items:center;gap:14px;padding:16px 24px}
+header img{width:80px;height:90px;object-fit:contain}
+header div{flex:1}
+h1{margin:0;font-size:31px;font-weight:800;color:var(--red);line-height:1.05}
+header p{margin:4px 0 0;font-size:17px}
+.tag{flex:none;font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-bottom:3px solid var(--red);padding-bottom:4px}
+nav{background:#fff;border-block:1px solid var(--bd)}
+nav .wrap{display:flex;flex-wrap:wrap;gap:6px}
+nav button{background:none;border:0;border-bottom:4px solid transparent;font-weight:800;font-size:14px;font-family:inherit;text-transform:uppercase;padding:15px 20px 11px;cursor:pointer}
+nav button:hover,nav button.active{color:var(--red)}nav button.active{border-bottom-color:var(--red)}
+.crumbs{font-size:13px;color:var(--muted);padding:14px 0 4px}
+.section{display:none}.section.active{display:block}
+h2{margin:8px 0 18px;font-size:22px;padding-left:12px;border-left:5px solid var(--red)}
+.panel{background:#fff;border:1px solid var(--bd);margin-bottom:16px}
+.panel-head{background:#fdeeee;border-bottom:2px solid var(--red);padding:10px 18px;font-weight:800}
+.panel-body{padding:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}.full{grid-column:1/-1}
+.filters{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}.filters .wide{grid-column:span 2}
+label{display:block;font-weight:600;font-size:13.5px;margin-bottom:4px}label i{color:#b3261e;font-style:normal}
+input,select,textarea{width:100%;padding:8px 10px;font:inherit;border:1px solid #aaa;background:#fff}
+input:focus,select:focus,textarea:focus{outline:2px solid #f4a3a8;border-color:var(--red)}
+#photoPreview{display:none;max-width:240px;max-height:170px;margin-top:8px;border:1px solid var(--bd)}
+.hint{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+.btn{font-weight:600;font-size:14px;font-family:inherit;padding:9px 22px;cursor:pointer;border:1px solid var(--red);margin:18px 10px 0 0}
+.btn-primary{background:var(--red);color:#fff}.btn-secondary{background:#fff;color:var(--red)}
+.error{background:#fdecea;border:1px solid #f1b9b4;color:#7a1c15;padding:9px 12px;margin-top:14px}.error:empty{display:none}
+.success{background:#e9f4ec;border:1px solid #b7d6c0;color:#1d4a2a;padding:10px 14px;margin-top:14px}
+.count{margin:14px 0 8px;color:var(--muted)}
+.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}
+th{background:var(--red);color:#fff;text-align:left;font-size:13px;padding:10px 12px;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #e5e5e5;vertical-align:top;font-size:14px}
+tbody tr:nth-child(even){background:#fafafa}
+td.desc{min-width:240px}td.desc span{display:block;color:var(--muted);font-size:13px}td.desc .match{color:#8a4a0c;font-weight:600}
+.muted{color:var(--muted);font-size:13px}.empty{padding:28px;text-align:center;color:var(--muted)}
+.thumb,.nothumb{width:84px;height:60px;border:1px solid var(--bd)}.thumb{object-fit:cover}
+.nothumb{border-style:dashed;color:#999;font-size:11px;display:flex;align-items:center;justify-content:center}
+.badge{font-size:12px;font-weight:600;padding:1px 8px;border:1px solid;white-space:nowrap}
+.b-lost{color:#b4570e;background:#fdf3ea}.b-found,.s-returned{color:#1e5a30;background:#edf7f0}
+.s-reported{color:#7a5200;background:#fdf6e2}.s-claimed{color:#0f4f8a;background:#eaf3fb}
+.row-btn{font-weight:600;font-size:12.5px;font-family:inherit;padding:4px 9px;margin:0 4px 4px 0;background:#fff;color:var(--red);border:1px solid var(--red);cursor:pointer;white-space:nowrap}
+.row-btn:hover{background:var(--red);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.stat{background:#fff;border:1px solid var(--bd);border-left:5px solid var(--red);padding:16px 18px}
+.stat:nth-child(2){border-left-color:var(--ink)}.stat:nth-child(3){border-left-color:#2b6a3d}
+.stat b{display:block;font-size:34px;line-height:1.1}.stat span{color:var(--muted)}
+footer{background:var(--ink);border-top:4px solid var(--red);color:#cfcfcf;font-size:13px;padding:16px 0;margin-top:40px}
+@media(max-width:900px){.filters{grid-template-columns:1fr 1fr}.filters .wide{grid-column:1/-1}.stats{grid-template-columns:1fr}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}h1{font-size:19px}header p{font-size:12px}.tag{display:none}header img{width:48px;height:54px}nav button{padding:12px 10px 8px;font-size:12px}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap"><a href="https://sspu.ac.in/" target="_blank" rel="noopener">University Website</a></div></div>
+<header><div class="wrap">
+  <img src="data:image/png;base64,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" alt="SSPU logo">
+  <div><h1>Symbiosis Skills and<br>Professional University</h1><p>A Symbiosis Skills University, Pune</p></div>
+  <span class="tag">Lost &amp; Found Portal</span>
+</div></header>
+<nav><div class="wrap">
+  <button class="tab active" data-tab="lost">Report Lost Item</button>
+  <button class="tab" data-tab="found">Report Found Item</button>
+  <button class="tab" data-tab="browse">Browse Records</button>
+  <button class="tab" data-tab="dashboard">Summary</button>
+</div></nav>
+
+<main><div class="wrap">
+  <div class="error" id="banner"></div>
+  <div class="crumbs">Home &rsaquo; Lost and Found &rsaquo; <span id="crumbPage">Report Lost Item</span></div>
+
+  <section id="report" class="section active">
+    <h2 id="reportTitle">Report a Lost Item</h2>
+    <div class="panel"><div class="panel-head">Item details</div><div class="panel-body">
+      <form id="reportForm"><div class="grid">
+        <div><label for="itemName">Name of item <i>*</i></label><input id="itemName" placeholder="e.g. Black leather wallet"></div>
+        <div><label for="category">Category <i>*</i></label><select id="category"></select></div>
+        <div class="full"><label for="description">Description <i>*</i></label><textarea id="description" rows="3" placeholder="Colour, brand, distinguishing marks, contents"></textarea></div>
+        <div><label for="date">Date <i>*</i></label><input type="date" id="date"></div>
+        <div><label for="location">Location on campus <i>*</i></label><input id="location" placeholder="e.g. Library, Canteen, Block A"></div>
+        <div class="full"><label for="photo">Photo of item (optional)</label><input type="file" id="photo" accept="image/*">
+          <p class="hint">JPG or PNG up to 5 MB. The image is resized automatically.</p><img id="photoPreview" alt="Preview"></div>
+        <div><label for="contactName">Reporter's full name <i>*</i></label><input id="contactName"></div>
+        <div><label for="contact">Phone number or email <i>*</i></label><input id="contact"></div>
+      </div>
+      <div class="error" id="formErrors"></div>
+      <button type="submit" class="btn btn-primary">Submit Report</button><button type="reset" class="btn btn-secondary">Clear Form</button>
+      </form>
+      <div id="confirm"></div>
+    </div></div>
+  </section>
+
+  <section id="browse" class="section">
+    <h2>Browse Records</h2>
+    <div class="panel"><div class="panel-head">Search and filter</div><div class="panel-body"><div class="filters">
+      <div class="wide"><label for="searchBox">Keyword</label><input id="searchBox" placeholder="Item name or description"></div>
+      <div><label for="filterLocation">Location</label><input id="filterLocation"></div>
+      <div><label for="filterDate">Date</label><input type="date" id="filterDate"></div>
+      <div><label for="filterType">Type</label><select id="filterType"><option value="">All</option><option value="lost">Lost</option><option value="found">Found</option></select></div>
+      <div><label for="filterCategory">Category</label><select id="filterCategory"></select></div>
+      <div><label for="filterStatus">Status</label><select id="filterStatus"></select></div>
+    </div></div></div>
+    <p class="count" id="resultCount"></p>
+    <div class="panel table-wrap"><table>
+      <thead><tr><th>Photo</th><th>Item</th><th>Type</th><th>Category</th><th>Location</th><th>Date</th><th>Contact</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="itemList"></tbody>
+    </table></div>
+  </section>
+
+  <section id="dashboard" class="section">
+    <h2>Summary</h2>
+    <div class="stats">
+      <div class="stat"><b id="statReported">0</b><span>Total reports</span></div>
+      <div class="stat"><b id="statMatched">0</b><span>Open reports with a possible match</span></div>
+      <div class="stat"><b id="statResolved">0</b><span>Resolved (claimed or returned)</span></div>
+    </div>
+    <div class="panel table-wrap"><div class="panel-head">Reports by category</div><table>
+      <thead><tr><th>Category</th><th>Lost</th><th>Found</th><th>Open</th><th>Resolved</th></tr></thead>
+      <tbody id="categoryTable"></tbody>
+    </table></div>
+  </section>
+</div></main>
+
+<footer><div class="wrap">&copy; Symbiosis Skills and Professional University, Pune &middot; Lost and Found Portal</div></footer>
+
+<script>
+// ---- Database settings (Supabase): paste your project URL and public key ----
+const SUPABASE_URL = "https://rtfmlciqujhahgkgmqmh.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_E3sUmsfd_3zvduLorfnEYQ_TnXlkqA-";
+
+const CATS = ["Electronics", "Books", "ID Card", "Keys", "Clothing", "Bags", "Other"];
+const STATUSES = ["Reported", "Claimed", "Returned"];
+const API = SUPABASE_URL.replace(/\/$/, "") + "/rest/v1/items";
+const $ = id => document.getElementById(id);
+const val = id => $(id).value.trim();
+const today = () => new Date().toLocaleDateString("en-CA");
+const fmt = iso => new Date(iso + "T00:00:00").toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+const esc = t => String(t == null ? "" : t).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fill = (id, list, first) => { $(id).innerHTML = (first ? '<option value="">' + first + "</option>" : "") + list.map(c => "<option>" + c + "</option>").join(""); };
+let items = [], type = "lost", photo = "";
+
+fill("category", CATS, "-- Select --"); fill("filterCategory", CATS, "All"); fill("filterStatus", STATUSES, "All");
+$("date").max = today();
+
+// ---- Database calls: GET (load), POST (add), PATCH (change status) ----
+async function db(method, path, body) {
+  const h = { apikey: SUPABASE_ANON_KEY, "Content-Type": "application/json", Prefer: "return=minimal" };
+  if (SUPABASE_ANON_KEY.startsWith("eyJ")) h.Authorization = "Bearer " + SUPABASE_ANON_KEY;
+  const r = await fetch(API + path, { method, headers: h, body: body && JSON.stringify(body) });
+  if (!r.ok) throw new Error(r.status);
+  return method === "GET" ? r.json() : null;
+}
+
+async function load() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) { $("banner").textContent = "Database not connected: add SUPABASE_URL and SUPABASE_ANON_KEY in the script."; return; }
+  try { items = await db("GET", "?select=*&order=created_at.desc"); $("banner").textContent = ""; }
+  catch (e) { $("banner").textContent = "Could not load records from the server. Check your connection and try again."; }
+}
+
+// ---- Matching: opposite type, same category, same place or a shared keyword ----
+const STOP = new Set(["with", "that", "this", "from", "have", "were", "near", "left", "found", "lost", "item", "there", "their", "they", "been", "into", "some", "very", "your", "will", "when", "which", "what", "also", "inside", "handed", "after", "about", "onto", "over", "under", "small", "large"]);
+const words = t => t.toLowerCase().split(/\W+/).filter(w => w.length > 3 && !STOP.has(w));
+const place = t => t.toLowerCase().replace(/[^a-z0-9]/g, "");
+function matches(a) {
+  if (a.status !== "Reported") return [];
+  const wa = new Set(words(a.name + " " + a.description));
+  return items.filter(b => b.id !== a.id && b.type !== a.type && b.status === "Reported" && b.category === a.category &&
+    (place(b.location) === place(a.location) || words(b.name + " " + b.description).some(w => wa.has(w))));
+}
+
+// ---- Tabs ----
+document.querySelectorAll(".tab").forEach(b => b.onclick = async () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.remove("active")); b.classList.add("active");
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  $("crumbPage").textContent = b.textContent;
+  const t = b.dataset.tab;
+  if (t === "lost" || t === "found") {
+    type = t; $("reportTitle").textContent = "Report a " + (t === "lost" ? "Lost" : "Found") + " Item"; $("report").classList.add("active");
+  } else {
+    $(t).classList.add("active"); await load(); t === "browse" ? renderItems() : renderDashboard();
+  }
+});
+
+// ---- Photo (resized to 600 px JPEG in the browser) ----
+function clearPhoto() { photo = ""; $("photo").value = ""; $("photoPreview").style.display = "none"; }
+$("photo").onchange = function () {
+  const f = this.files[0], err = $("formErrors");
+  if (!f) { clearPhoto(); return; }
+  if (!f.type.startsWith("image/") || f.size > 5 * 1024 * 1024) { clearPhoto(); err.textContent = "Choose an image file of 5 MB or less."; return; }
+  const rd = new FileReader();
+  rd.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, 600 / Math.max(img.width, img.height)), c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      photo = c.toDataURL("image/jpeg", 0.7); $("photoPreview").src = photo; $("photoPreview").style.display = "block"; err.textContent = "";
+    };
+    img.onerror = () => { clearPhoto(); err.textContent = "That file could not be read as an image."; };
+    img.src = rd.result;
+  };
+  rd.readAsDataURL(f);
+};
+$("reportForm").onreset = () => { clearPhoto(); $("formErrors").textContent = ""; $("confirm").innerHTML = ""; };
+
+// ---- Submit a report ----
+$("reportForm").onsubmit = async function (e) {
+  e.preventDefault();
+  const f = { name: val("itemName"), category: val("category"), description: val("description"), date: val("date"),
+              location: val("location"), contact_name: val("contactName"), contact: val("contact") };
+  const label = { name: "Name of item", category: "Category", description: "Description", date: "Date", location: "Location", contact_name: "Reporter's name", contact: "Phone number or email" };
+  const errs = Object.keys(label).filter(k => !f[k]).map(k => label[k] + " is required.");
+  if (f.date > today()) errs.push("Date cannot be in the future.");
+  if (errs.length) { $("formErrors").innerHTML = errs.join("<br>"); $("confirm").innerHTML = ""; return; }
+
+  await load();   // so matching sees everyone's latest reports
+  const item = Object.assign({ id: "LF-" + Date.now().toString().slice(-6), type: type }, f, { status: "Reported", image: photo || null });
+  try { await db("POST", "", item); }
+  catch (x) { $("formErrors").textContent = "The report could not be saved to the server. Please try again."; $("confirm").innerHTML = ""; return; }
+  items.unshift(item);
+  const m = matches(item);
+  this.reset();
+  $("confirm").innerHTML = '<div class="success">Your <strong>' + item.type + "</strong> item report has been recorded. Reference number: <strong>" + item.id +
+    "</strong>. Please retain it for future correspondence.<br>" +
+    (m.length ? "<strong>Possible match found:</strong> " + m.map(o => o.id + " (" + esc(o.name) + ", " + esc(o.location) + ", reported " + o.type + ")").join("; ") + ". See Browse Records."
+              : "No matching " + (item.type === "lost" ? "found" : "lost") + " report yet.") + "</div>";
+};
+
+// ---- Browse and filter ----
+["searchBox", "filterLocation", "filterDate", "filterType", "filterCategory", "filterStatus"].forEach(id => $(id).oninput = renderItems);
+
+function row(i) {
+  const m = matches(i);
+  const img = /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+\/=]+$/.test(i.image || "") ? '<img class="thumb" src="' + i.image + '" alt="">' : '<div class="nothumb">No photo</div>';
+  const acts = i.status === "Reported" ? ["Claimed", "Returned"].map(s => '<button class="row-btn" data-id="' + esc(i.id) + '" data-s="' + s + '">Mark ' + s + "</button>").join("") : "&ndash;";
+  return "<tr><td>" + img + '</td><td class="desc"><strong>' + esc(i.name) + "</strong><span>" + esc(i.description) + "</span><span>Ref: " + esc(i.id) + "</span>" +
+    (m.length ? '<span class="match">Possible match: ' + m.map(o => esc(o.id)).join(", ") + "</span>" : "") + "</td>" +
+    '<td><span class="badge b-' + (i.type === "lost" ? "lost" : "found") + '">' + (i.type === "lost" ? "Lost" : "Found") + "</span></td><td>" + esc(i.category) + "</td><td>" + esc(i.location) + "</td>" +
+    '<td style="white-space:nowrap">' + esc(fmt(i.date)) + "</td><td>" + esc(i.contact_name) + '<br><span class="muted">' + esc(i.contact) + "</span></td>" +
+    '<td><span class="badge s-' + esc(i.status.toLowerCase()) + '">' + esc(i.status) + "</span></td><td>" + acts + "</td></tr>";
+}
+
+function renderItems() {
+  const q = val("searchBox").toLowerCase(), l = val("filterLocation").toLowerCase(), d = val("filterDate"), t = val("filterType"), c = val("filterCategory"), s = val("filterStatus");
+  const list = items.filter(i => (!q || (i.name + " " + i.description).toLowerCase().includes(q)) && (!l || i.location.toLowerCase().includes(l)) &&
+    (!d || i.date === d) && (!t || i.type === t) && (!c || i.category === c) && (!s || i.status === s)).sort((a, b) => a.date < b.date ? 1 : -1);
+  $("resultCount").textContent = list.length + " of " + items.length + " records shown";
+  $("itemList").innerHTML = list.length ? list.map(row).join("") : '<tr><td colspan="9" class="empty">No records match the selected filters.</td></tr>';
+}
+
+// ---- Mark claimed / returned ----
+$("itemList").onclick = async e => {
+  const b = e.target.closest("button"); if (!b) return;
+  try { await db("PATCH", "?id=eq." + encodeURIComponent(b.dataset.id), { status: b.dataset.s }); items.find(i => i.id === b.dataset.id).status = b.dataset.s; renderItems(); }
+  catch (x) { $("banner").textContent = "The status could not be updated. Please try again."; }
+};
+
+// ---- Summary ----
+function renderDashboard() {
+  $("statReported").textContent = items.length;
+  $("statMatched").textContent = items.filter(i => matches(i).length).length;
+  $("statResolved").textContent = items.filter(i => i.status !== "Reported").length;
+  $("categoryTable").innerHTML = CATS.map(c => {
+    const x = items.filter(i => i.category === c), open = x.filter(i => i.status === "Reported").length;
+    return "<tr><td>" + c + "</td><td>" + x.filter(i => i.type === "lost").length + "</td><td>" + x.filter(i => i.type === "found").length + "</td><td>" + open + "</td><td>" + (x.length - open) + "</td></tr>";
+  }).join("");
+}
+
+load();
+</script>
+</body>
+</html>
